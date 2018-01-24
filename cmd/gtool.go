@@ -12,6 +12,7 @@ import (
 var testPath = "F:/tmp/"
 
 func gtoolInit() {
+	common.CheckPlatfrom()
 	if err := dirandfile.CreateDir(testPath); err != nil {
 		os.Exit(1)
 	}
