@@ -2,16 +2,19 @@ package cli
 
 import (
 	"fmt"
-	"strings"
-
 	"github.com/spf13/cobra"
+	"gtool/pkg/common"
+	"gtool/pkg/flen"
+	"gtool/pkg/utCover"
+	"strings"
 )
 
 // Config ...
 type Config struct {
 	Flen    bool
 	Gocyclo bool
-	Help    map[string]string
+
+	Help map[string]string
 }
 
 // CmdInfo ...
@@ -33,10 +36,8 @@ var CmdFlen = &cobra.Command{
             For many years people have printed back to the screen.
             `,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("flen: 1", flenCfg.Flen)
-		if flenCfg.Flen {
-			fmt.Println("flen: 2")
-		}
+		pkgs := common.ReadArgs().CheckPkgs
+		flen.GenerateFuncLens(pkgs[0])
 	},
 }
 
@@ -52,11 +53,23 @@ var CmdGocyclo = &cobra.Command{
 	},
 }
 
+// Utcover ...
+var CmdUtCover = &cobra.Command{
+	Use:   "utCover [string to utCover]",
+	Short: "utCover anything to the screen",
+	Long: `utCover is for test pkg's ytCover'.
+            utCover works a lot like print, except it has a child command.
+            `,
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("checkPath:", common.ReadArgs().CheckPkgs)
+		utCover.UtCover(common.ReadArgs().CheckPkgs)
+	},
+}
+
 // CmdConfig ...
 func CmdConfig() {
 	CmdFlen.Flags().BoolVarP(&flenCfg.Flen, "test", "t", false, "test to add test files")
-	rootCmd.AddCommand(CmdFlen, CmdGocyclo)
-
+	rootCmd.AddCommand(CmdUtCover, CmdFlen, CmdGocyclo)
 	rootCmd.Execute()
 
 }

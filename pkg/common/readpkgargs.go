@@ -2,6 +2,7 @@ package common
 
 import (
 	"flag"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -20,12 +21,16 @@ func ReadArgs() CliArgs {
 	cliArgs := &CliArgs{}
 
 	cliArgs.len = len(args)
-	if cliArgs.len == 0 {
+	if cliArgs.len == 1 {
 		flag.Usage()
 		os.Exit(-1)
 	}
 
 	cliArgs.pkgPath = args[1]
+	if IsPkgInGOPATH(cliArgs.pkgPath) {
+		fmt.Println("pkg is not in GOPATH!")
+		os.Exit(1)
+	}
 	if cliArgs.len == 2 {
 		cliArgs.filterPkgs = append(cliArgs.filterPkgs, "")
 		cliArgs.findChildPkgs()
