@@ -1,26 +1,39 @@
 package main
 
 import (
-	"fmt"
 	"gtool/pkg/cli"
 	"gtool/pkg/common"
 	"gtool/pkg/dir-and-file"
-	"gtool/pkg/utCover"
 	"os"
 )
 
-var testPath = "F:/tmp/"
+var (
+	winTestPath   = "F:/tmp/"
+	linuxTestPath = "/tmp"
+	testPath      string
+)
 
 func gtoolInit() {
-	common.CheckPlatfrom()
+	testPath = common.CheckPlatfrom()
+	switch testPath {
+	case "win":
+		{
+			testPath = winTestPath
+		}
+	case "linux":
+		{
+			testPath = linuxTestPath
+		}
+	default:
+		testPath = ""
+	}
 	if err := dirandfile.CreateDir(testPath); err != nil {
 		os.Exit(1)
 	}
-	fmt.Println("checkPath:", common.ReadArgs().CheckPkgs)
-	utCover.UtCover(common.ReadArgs().CheckPkgs)
+
 }
 func main() {
-
-	cli.CmdConfig()
 	gtoolInit()
+	cli.CmdConfig()
+
 }
