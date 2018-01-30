@@ -12,13 +12,18 @@ type FuncLenT struct {
 	Name     string
 	Size     int
 	Filepath string
-	Lbrace   int
-	Rbrace   int
-	fType    string
+	fType    int
 }
 
-func GenerateFuncLens(pkg string) ([]FuncLenT, error) {
+func DoFlen(cPkgs []string) {
+	flenInfo := &FuncLenT{}
+	for _, v := range cPkgs {
+		flenInfo.GenerateFuncLens(v)
+		fmt.Printf("%+v\n", flenInfo)
+	}
 
+}
+func (flen *FuncLenT) GenerateFuncLens(pkg string) error {
 	fset := token.NewFileSet()
 	pkgs, ferr := parser.ParseDir(fset, pkg, func(f os.FileInfo) bool {
 		//if opts.IncludeTests {
@@ -27,26 +32,20 @@ func GenerateFuncLens(pkg string) ([]FuncLenT, error) {
 		//return !strings.HasSuffix(f.Name(), "_test.go")
 	}, parser.AllErrors)
 	if ferr != nil {
-		panic(ferr)
+		fmt.Println("generateFuncLens error:", ferr)
+		os.Exit(-1)
 	}
-	flens := make([]FuncLenT, 0)
 	for _, v := range pkgs {
 		for filepath, astf := range v.Files {
 			for _, decl := range astf.Decls {
 				ast.Inspect(decl, func(node ast.Node) bool {
-					var (
-						funcname string
-						diff     int
-						lb, rb   token.Pos
-						rln, lln int
-						ftype    string
-					)
-
+					var lb, rb token.Pos
+					var rln, lln, diff int
 					if x, ok := node.(*ast.FuncDecl); ok {
-						ftype = "implemented"
-						funcname = x.Name.Name
+						flen.fType = implemented
+						flen.Name = x.Name.Name
 						if x.Body == nil {
-							ftype = "implementedAtRuntime" // externally implemented
+							flen.fType = implementedAtRuntime // externally implemented
 						} else {
 							lb = x.Body.Lbrace
 							rb = x.Body.Rbrace
@@ -60,21 +59,14 @@ func GenerateFuncLens(pkg string) ([]FuncLenT, error) {
 								diff = 1 // single line func
 							}
 						}
-						flens = append(flens, FuncLenT{
-							Name:     funcname,
-							Size:     diff,
-							Filepath: filepath,
-							Lbrace:   lln,
-							Rbrace:   rln,
-							fType:    ftype,
-						})
+						flen.Filepath = filepath
+						flen.Size = diff
 					}
 					return false
-
 				})
 			}
 		}
 	}
-	fmt.Printf("%+v", flens)
-	return flens, nil
+	fmt.Printf("%+v", flen)
+	return nil
 }

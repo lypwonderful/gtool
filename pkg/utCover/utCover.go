@@ -2,6 +2,7 @@ package utCover
 
 import (
 	"fmt"
+	"gtool/pkg/common"
 	"os"
 	"os/exec"
 	"regexp"
@@ -23,10 +24,12 @@ type UtCoverInter interface {
 }
 
 func UtCover(cPkgs []string) {
-	utCoverInfo := &UtCoverInfo{}
+	//utCoverInfo := &UtCoverInfo{}
+	utCoverInfo := &common.AllToolT{}
 	for _, v := range cPkgs {
-		utCoverInfo.PkgPath = v
-		utCoverInfo.doUtExec()
+		utCoverInfo.UtCoverT.PkgPath = v
+		utCoverInfo.UtCoverT.doUtExec()
+		utCoverInfo.FlenT.GenerateFuncLens(v)
 		fmt.Printf("%+v\n", utCoverInfo)
 	}
 }

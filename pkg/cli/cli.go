@@ -9,12 +9,13 @@ import (
 	"strings"
 )
 
+var pkgs []string
+
 // Config ...
 type Config struct {
 	Flen    bool
 	Gocyclo bool
-
-	Help map[string]string
+	Help    map[string]string
 }
 
 // CmdInfo ...
@@ -36,8 +37,7 @@ var CmdFlen = &cobra.Command{
             For many years people have printed back to the screen.
             `,
 	Run: func(cmd *cobra.Command, args []string) {
-		pkgs := common.ReadArgs().CheckPkgs
-		flen.GenerateFuncLens(pkgs[0])
+		flen.DoFlen(pkgs)
 	},
 }
 
@@ -61,8 +61,7 @@ var CmdUtCover = &cobra.Command{
             utCover works a lot like print, except it has a child command.
             `,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("checkPath:", common.ReadArgs().CheckPkgs)
-		utCover.UtCover(common.ReadArgs().CheckPkgs)
+		utCover.UtCover(pkgs)
 	},
 }
 
@@ -70,6 +69,7 @@ var CmdUtCover = &cobra.Command{
 func CmdConfig() {
 	CmdFlen.Flags().BoolVarP(&flenCfg.Flen, "test", "t", false, "test to add test files")
 	rootCmd.AddCommand(CmdUtCover, CmdFlen, CmdGocyclo)
+	pkgs = common.ReadArgs().CheckPkgs
 	rootCmd.Execute()
 
 }
