@@ -3,17 +3,10 @@ package common
 import (
 	"fmt"
 	"gtool/pkg/dir-and-file"
-	"gtool/pkg/flen"
-	"gtool/pkg/utCover"
 	"os"
 	"path"
 	"strings"
 )
-
-type AllToolT struct {
-	FlenT    flen.FuncLenT
-	UtCoverT utCover.UtCoverInfo
-}
 
 func CheckPlatfrom() string {
 	goroot := os.Getenv("GOROOT")

@@ -2,7 +2,7 @@ package utCover
 
 import (
 	"fmt"
-	"gtool/pkg/common"
+	"gtool/pkg/flen"
 	"os"
 	"os/exec"
 	"regexp"
@@ -10,6 +10,10 @@ import (
 	"strings"
 )
 
+type AllToolT struct {
+	FlenT    flen.FuncLenT
+	UtCoverT UtCoverInfo
+}
 type UtCoverInfo struct {
 	PkgPath   string
 	UtRate    float64
@@ -25,7 +29,7 @@ type UtCoverInter interface {
 
 func UtCover(cPkgs []string) {
 	//utCoverInfo := &UtCoverInfo{}
-	utCoverInfo := &common.AllToolT{}
+	utCoverInfo := &AllToolT{}
 	for _, v := range cPkgs {
 		utCoverInfo.UtCoverT.PkgPath = v
 		utCoverInfo.UtCoverT.doUtExec()

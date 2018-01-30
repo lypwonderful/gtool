@@ -21,7 +21,7 @@ func ReadArgs() CliArgs {
 	cliArgs := &CliArgs{}
 
 	cliArgs.len = len(args)
-	if cliArgs.len == 1 {
+	if cliArgs.len <= 1 {
 		flag.Usage()
 		os.Exit(-1)
 	}
