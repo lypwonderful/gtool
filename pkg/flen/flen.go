@@ -23,6 +23,7 @@ type FlenPathT struct {
 
 func DoFlen(cPkgs []string) {
 	flenInfo := &FlenPathT{}
+	flenInfo.Count = make(map[string]int)
 	for _, v := range cPkgs {
 		flenInfo.GenerateFuncLens(v)
 	}
