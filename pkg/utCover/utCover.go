@@ -11,7 +11,7 @@ import (
 )
 
 type AllToolT struct {
-	FlenT    flen.FuncLenT
+	FlenT    flen.FlenPathT
 	UtCoverT UtCoverInfo
 }
 type UtCoverInfo struct {
@@ -48,7 +48,7 @@ func (utCoverInfo *UtCoverInfo) retResult(outString string, err error) {
 	if err != nil {
 		utCoverInfo.ErrInfo = fmt.Sprintf("%s", outString)
 		if utCoverInfo.ExitState == "exit status 2" {
-			fmt.Printf("%+v\n", utCoverInfo)
+			//fmt.Printf("%+v\n", utCoverInfo)
 			os.Exit(1)
 		}
 		utCoverInfo.UtRate = 0

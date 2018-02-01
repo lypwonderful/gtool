@@ -70,6 +70,7 @@ func CmdConfig() {
 	CmdFlen.Flags().BoolVarP(&flenCfg.Flen, "test", "t", false, "test to add test files")
 	rootCmd.AddCommand(CmdUtCover, CmdFlen, CmdGocyclo)
 	pkgs = common.ReadArgs().CheckPkgs
+	fmt.Println("pkgs", pkgs)
 	rootCmd.Execute()
 
 }
