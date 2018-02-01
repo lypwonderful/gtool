@@ -28,7 +28,7 @@ func ReadArgs() CliArgs {
 
 	cliArgs.pkgPath = args[1]
 	if IsPkgInGOPATH(cliArgs.pkgPath) {
-		fmt.Println("pkg is not in GOPATH!")
+		fmt.Println("pkg is not in GOPATH! ", cliArgs.pkgPath)
 		os.Exit(1)
 	}
 	if cliArgs.len == 2 {
