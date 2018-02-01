@@ -47,7 +47,7 @@ func (flen *FlenPathT) GenerateFuncLens(pkg string) error {
 		fmt.Println("generateFuncLens error:", ferr)
 		os.Exit(-1)
 	}
-	fLen.filepath = pkg
+	flen.Filepath = pkg
 	if len(pkgs) == 0 {
 		fLen.name = ""
 		fLen.size = 0
