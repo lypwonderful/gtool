@@ -35,6 +35,7 @@ func (flen *FlenPathT) getPkgAllSize() (count int) {
 	for _, v := range flen.FlenS {
 		count = count + v.size
 	}
+	return count
 }
 func (flen *FlenPathT) GenerateFuncLens(pkg string) error {
 	fLen := &funcLenT{}
