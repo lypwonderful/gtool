@@ -17,21 +17,25 @@ type funcLenT struct {
 type FlenPathT struct {
 	Filepath string
 	FlenS    []funcLenT
-	Count    int
+	Count    map[string]int
+	All      int
 }
 
 func DoFlen(cPkgs []string) {
 	flenInfo := &FlenPathT{}
 	for _, v := range cPkgs {
 		flenInfo.GenerateFuncLens(v)
-		fmt.Printf("%+v\n", flenInfo)
-		fmt.Println("=========================")
 	}
+	fmt.Printf("%+v\n", flenInfo.Count)
+	fmt.Printf("%d\n", flenInfo.All)
 
 }
 func (flen *FlenPathT) getPkgAllSize() {
 	for _, v := range flen.FlenS {
-		flen.Count = flen.Count + v.size
+		flen.Count[v.filepath] = v.size
+	}
+	for _, v := range flen.Count {
+		flen.All = flen.All + v
 	}
 }
 func (flen *FlenPathT) GenerateFuncLens(pkg string) error {
