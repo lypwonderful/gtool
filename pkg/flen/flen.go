@@ -47,10 +47,10 @@ func (flen *FlenPathT) GenerateFuncLens(pkg string) error {
 		fmt.Println("generateFuncLens error:", ferr)
 		os.Exit(-1)
 	}
+	fLen.filepath = pkg
 	if len(pkgs) == 0 {
 		fLen.name = ""
 		fLen.size = 0
-		fLen.filepath = pkg
 		fLen.fType = implemented
 		flen.FlenS = append(flen.FlenS, *fLen)
 		return nil
@@ -80,7 +80,6 @@ func (flen *FlenPathT) GenerateFuncLens(pkg string) error {
 							}
 						}
 						fLen.filepath = filepath
-						flen.Filepath = filepath
 						fLen.size = diff
 						flen.getPkgAllSize()
 						flen.FlenS = append(flen.FlenS, *fLen)
