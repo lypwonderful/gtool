@@ -7,10 +7,13 @@ import (
 
 func IsDirExitd(path string) bool {
 	_, err := os.Stat(path)
-	if !os.IsNotExist(err) {
+	if err != nil {
 		return true
 	}
-	return false
+	if os.IsNotExist(err) {
+		return false
+	}
+	return true
 }
 func CreateDir(dirPath string) error {
 	if !IsDirExitd(dirPath) {

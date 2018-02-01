@@ -29,7 +29,7 @@ func IsPkgInGOPATH(pkgPath string) bool {
 	goPaths := strings.Split(gopath, ";")
 	for _, v := range goPaths {
 		v = path.Join(v, "src", pkgPath)
-		if dirandfile.IsDirExitd(v) {
+		if !dirandfile.IsDirExitd(v) {
 			return true
 		}
 	}
