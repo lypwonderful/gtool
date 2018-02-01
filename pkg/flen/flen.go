@@ -24,8 +24,15 @@ func DoFlen(cPkgs []string) {
 	flenInfo := &FlenPathT{}
 	for _, v := range cPkgs {
 		flenInfo.GenerateFuncLens(v)
+		fmt.Printf("%+v\n", flenInfo)
+		fmt.Println("=========================")
 	}
 
+}
+func (flen *FlenPathT) getPkgAllSize() {
+	for _, v := range flen.FlenS {
+		flen.Count = flen.Count + v.size
+	}
 }
 func (flen *FlenPathT) GenerateFuncLens(pkg string) error {
 	fLen := &funcLenT{}
@@ -73,7 +80,9 @@ func (flen *FlenPathT) GenerateFuncLens(pkg string) error {
 							}
 						}
 						fLen.filepath = filepath
+						flen.Filepath = filepath
 						fLen.size = diff
+						flen.getPkgAllSize()
 						flen.FlenS = append(flen.FlenS, *fLen)
 					}
 					return false
